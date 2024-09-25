@@ -12,21 +12,41 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private bool m_grounded;
 
     [Header("Movement")]
-    [SerializeField] private InputActionReference m_keyboardDirection;
-    [SerializeField] private InputActionReference m_controllerDirection, m_currentDirection;
-    [SerializeField] private int m_jumpForce, m_movementSpeed, m_groundDrag;
+    [SerializeField] private InputActionReference m_movementDirection;
+    [SerializeField] private float m_jumpForce, m_movementSpeed, m_groundDrag, m_startSpeed, m_halfedSpeed;
+
+    [Header("Box shit")]
+    [SerializeField] private Transform m_boxHolder;
+    [SerializeField] private Transform m_box;
+    private bool m_holding;
 
     private Rigidbody2D m_rb;
 
     void Start()
     {
         m_rb = GetComponent<Rigidbody2D>();
-        m_currentDirection = m_keyboardDirection;
+        m_halfedSpeed = m_movementSpeed / 1.3f;
+        m_startSpeed = m_movementSpeed;
     }
+
+    //private void OnPause()
+    //{
+    //    PlayerInfo.Instance.isPaused = !PlayerInfo.Instance.isPaused;
+    //}
 
     private void OnGrab()
     {
         Debug.Log("Attempting to grab !");
+        if (m_box.position.x < m_boxHolder.position.x + 1 && m_box.position.x > m_boxHolder.position.x - 1 && m_box.position.y < m_boxHolder.position.y + 1 && m_box.position.y > m_boxHolder.position.y - 1 && !m_holding)
+        {
+            m_holding = true;
+            m_box.GetComponent<BoxCollider2D>().enabled = false;
+        }
+        else if (m_holding)
+        {
+            m_holding = false;
+            m_box.GetComponent<BoxCollider2D>().enabled = true;
+        }
     }
 
     private void OnJump()
@@ -41,7 +61,7 @@ public class PlayerMovement : MonoBehaviour
     private void Moving()
     {
         // Movement logic
-        Vector2 moveInput = m_currentDirection.action.ReadValue<Vector2>();
+        Vector2 moveInput = m_movementDirection.action.ReadValue<Vector2>();
         Vector2 moveDirection = transform.up * moveInput.y + transform.right * moveInput.x;
 
         m_rb.AddForce(moveDirection.normalized * m_movementSpeed * 10f, ForceMode2D.Force);
@@ -52,6 +72,14 @@ public class PlayerMovement : MonoBehaviour
         // Limit Velocity when needed
         Vector2 flatVel = new Vector2(m_rb.velocity.x, 0);
 
+        if (!m_grounded)
+        {
+            m_movementSpeed = m_halfedSpeed;
+        }
+        else
+        {
+            m_movementSpeed = m_startSpeed;
+        }
         if (flatVel.magnitude > m_movementSpeed)
         {
             Vector2 limitedVel = flatVel.normalized * m_movementSpeed;
@@ -77,7 +105,12 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            m_rb.drag = 2;
+            m_rb.drag = 0;
+        }
+
+        if (m_holding)
+        {
+            m_box.position = m_boxHolder.position;
         }
 
         SpeedControl();
