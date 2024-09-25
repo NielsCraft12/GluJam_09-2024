@@ -6,6 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+    path: Assets/Joah/Scenes/Start.unity
+    guid: 20ccabd391fe928448c971c244680168
+  - enabled: 1
+    path: Assets/Joah/Scenes/Levels.unity
+    guid: 094cb3fbfbcf9a44badd85e74b787c95
+  - enabled: 1
+    path: Assets/Joah/Scenes/Credits.unity
+    guid: b516c7db4b2d8ea42aa6c586ff4b41e3
+  - enabled: 1
+    path: Assets/Joah/Scenes/Level1.unity
+    guid: 3aace36450eb1494a90e939bc993fb1f
   m_configObjects: {}
