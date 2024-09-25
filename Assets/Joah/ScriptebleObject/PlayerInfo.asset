@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: PlayerInfo
   m_EditorClassIdentifier: 
   level: 1
+  DamagePoints: 0
+  isPaused: 0

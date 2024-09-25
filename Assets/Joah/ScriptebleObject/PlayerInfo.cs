@@ -4,4 +4,6 @@ using UnityEngine;
 public class PlayerInfo : GenericScriptableSingleton<PlayerInfo>
 {
     public int level;
+    public int DamagePoints;
+    public bool isPaused = false;
 }

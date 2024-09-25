@@ -17,6 +17,7 @@ public class MenuButtons : MonoBehaviour
     {
         int level = PlayerInfo.Instance.level;
         SceneManager.LoadScene("level" + level);
+        PlayerInfo.Instance.isPaused = false;
     }
 
     public void Levels()
@@ -32,11 +33,18 @@ public class MenuButtons : MonoBehaviour
     public void Level1()
     {
         SceneManager.LoadScene("Level1");
+        PlayerInfo.Instance.isPaused = false;
     }
 
     public void MainMenu()
     {
         SceneManager.LoadScene("Start");
+        PlayerInfo.Instance.isPaused = false;
+    }
+
+    public void Continue()
+    {
+        PlayerInfo.Instance.isPaused = false;
     }
 
     public void QuitGame()
