@@ -39,9 +39,9 @@ public class PlayerMovement : MonoBehaviour
     private void StartRunning(InputAction.CallbackContext context)
     {
         // When holding one of the movement buttons playing the running animation
-        m_animator.SetBool("Run", true);
-        if (!m_animator.GetBool("Jump") && !m_animator.GetBool("Fall"))
+        if (!m_animator.GetBool("Jump") && !m_animator.GetBool("Fall") && m_grounded)
         {
+            m_animator.SetBool("Run", true);
             m_animator.Play("Run");
         }
     }
@@ -71,7 +71,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnGrab()
     {
         // Attempting to grab the box or letting go of the box when holding it after pressing the grab button
-        if (m_box.position.x < m_boxHolder.position.x + 1 && m_box.position.x > m_boxHolder.position.x - 1 && m_box.position.y < m_boxHolder.position.y + 1 && m_box.position.y > m_boxHolder.position.y - 1 && !m_holding)
+        if (m_box.position.x < m_boxHolder.position.x + 0.5f && m_box.position.x > m_boxHolder.position.x - 0.5f && m_box.position.y < m_boxHolder.position.y + 0.5f && m_box.position.y > m_boxHolder.position.y - 0.5f && !m_holding)
         {
             m_holding = true;
             m_box.GetComponent<BoxCollider2D>().enabled = false;
@@ -175,12 +175,15 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         // When the player falls but doesn't go down anymore it stops playing the falling animation
-        else if (m_animator.GetBool("Fall"))
+        else if (m_animator.GetBool("Fall") && m_grounded)
         {
-            if (m_rb.velocity.y == 0)
-            {
-                m_animator.SetBool("Fall", false);
-            }
+            m_animator.SetBool("Fall", false);
+        }
+        // When the player walks off the edge it starts playing the falling animation
+        else if (!m_grounded)
+        {
+            m_animator.SetBool("Fall", true);
+            m_animator.Play("Fall");
         }
     }
 
