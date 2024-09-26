@@ -18,28 +18,47 @@ public class MenuButtons : MonoBehaviour
         int level = PlayerInfo.Instance.level;
         SceneManager.LoadScene("level" + level);
         PlayerInfo.Instance.isPaused = false;
+        Cursor.visible = true;
     }
 
     public void Levels()
     {
         SceneManager.LoadScene("Levels");
+        Cursor.visible = true;
     }
 
     public void Credits()
     {
         SceneManager.LoadScene("Credits");
+        Cursor.visible = true;
     }
 
     public void Level1()
     {
         SceneManager.LoadScene("Level1");
         PlayerInfo.Instance.isPaused = false;
+        PlayerInfo.Instance.level = 1;
+    }
+
+    public void Level2()
+    {
+        SceneManager.LoadScene("Level2");
+        PlayerInfo.Instance.isPaused = false;
+        PlayerInfo.Instance.level = 2;
+    }
+
+    public void Level3()
+    {
+        SceneManager.LoadScene("Level3");
+        PlayerInfo.Instance.isPaused = false;
+        PlayerInfo.Instance.level = 3;
     }
 
     public void MainMenu()
     {
         SceneManager.LoadScene("Start");
         PlayerInfo.Instance.isPaused = false;
+        Cursor.visible = true;
     }
 
     public void Continue()

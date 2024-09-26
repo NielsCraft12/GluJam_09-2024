@@ -23,17 +23,24 @@ public class UiManager : MonoBehaviour
         if(PlayerInfo.Instance.DamagePoints >= 3)
         {
             SceneManager.LoadScene("GameOver");
+            Cursor.visible = true;
         }
 
         if(PlayerInfo.Instance.isPaused)
         {
             escMenu.SetActive(true);
             Time.timeScale = 0;
+            Cursor.visible = true;
         }
         else
         {
             escMenu.SetActive(false);
             Time.timeScale = 1;
+            if(PlayerInfo.Instance.DamagePoints < 3)
+            {
+                Cursor.visible = false;
+            }
+           
         }
     }
 }
