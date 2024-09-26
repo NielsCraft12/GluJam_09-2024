@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,13 +21,42 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform m_box;
     private bool m_holding;
 
+    private Animator m_animator;
     private Rigidbody2D m_rb;
 
     void Start()
     {
         m_rb = GetComponent<Rigidbody2D>();
+        m_animator = GetComponent<Animator>();
         m_halfedSpeed = m_movementSpeed / 1.3f;
         m_startSpeed = m_movementSpeed;
+        m_movementDirection.action.performed += StartRunning;
+        m_movementDirection.action.canceled += StopRunning;
+    }
+    private void StartRunning(InputAction.CallbackContext context)
+    {
+        m_animator.SetBool("Run", true);
+        if (!m_animator.GetBool("Jump") && !m_animator.GetBool("Fall"))
+        {
+            m_animator.Play("Run");
+        }
+    }
+
+    private void StopRunning(InputAction.CallbackContext context)
+    {
+        m_animator.SetBool("Run", false);
+    }
+
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.transform.CompareTag("Enemy"))
+        {
+            Debug.Log("Hit enemy");
+            //PlayerInfo.Instance.damageDealt++;
+            m_animator.SetTrigger("Hit");
+            m_animator.Play("Hit");
+        }
     }
 
     //private void OnPause()
@@ -55,6 +85,8 @@ public class PlayerMovement : MonoBehaviour
         if (m_grounded)
         {
             m_rb.AddForce(Vector2.up * m_jumpForce, ForceMode2D.Impulse);
+            m_animator.SetBool("Jump", true);
+            m_animator.Play("Jump");
         }
     }
 
@@ -80,10 +112,30 @@ public class PlayerMovement : MonoBehaviour
         {
             m_movementSpeed = m_startSpeed;
         }
+
         if (flatVel.magnitude > m_movementSpeed)
         {
             Vector2 limitedVel = flatVel.normalized * m_movementSpeed;
             m_rb.velocity = new Vector2(limitedVel.x, m_rb.velocity.y);
+        }
+
+        if (m_rb.velocity.x > 0.1f)
+        {
+            GetComponent<SpriteRenderer>().flipX = false;
+        }
+        else if (m_rb.velocity.x < 0)
+        {
+            GetComponent<SpriteRenderer>().flipX = true;
+        }
+
+        if (flatVel.magnitude > 0 && !m_animator.GetBool("Jump") && !m_animator.GetBool("Fall"))
+        {
+            m_animator.SetBool("Run", true);
+            //m_animator.Play("Run");
+        }
+        else if (!m_animator.GetBool("Jump") && !m_animator.GetBool("Fall"))
+        {
+            m_animator.SetBool("Run", false);
         }
     }
 
@@ -114,6 +166,22 @@ public class PlayerMovement : MonoBehaviour
         }
 
         SpeedControl();
+
+        if (m_animator.GetBool("Jump"))
+        {
+            if (m_rb.velocity.y < 0)
+            {
+                m_animator.SetBool("Jump", false);
+                m_animator.SetBool("Fall", true);
+            }
+        }
+        else if (m_animator.GetBool("Fall"))
+        {
+            if (m_rb.velocity.y == 0)
+            {
+                m_animator.SetBool("Fall", false);
+            }
+        }
     }
 
     private void FixedUpdate()
