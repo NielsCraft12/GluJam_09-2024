@@ -58,7 +58,6 @@ public class PlayerMovement : MonoBehaviour
         // When the player collides with an enemy they take damage and play the hit animation
         if (collision.transform.CompareTag("Enemy"))
         {
-            PlayerInfo.Instance.DamagePoints++;
             m_animator.SetTrigger("Hit");
             m_animator.Play("Hit");
         }
