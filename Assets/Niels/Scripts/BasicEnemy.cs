@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BasicEnemy : MonoBehaviour
@@ -9,6 +10,7 @@ public class BasicEnemy : MonoBehaviour
     Rigidbody2D rb;
     bool walingLeft = true;
     Vector3 forceDirection;
+
 
 
 
@@ -37,7 +39,7 @@ public class BasicEnemy : MonoBehaviour
 
         RaycastHit2D hit = Physics2D.Raycast(Pos, direction, 1);
  
-        if (hit)
+        if (hit && hit.collider.name != "Box")
         {
             Rotate();
         }
@@ -80,6 +82,27 @@ public class BasicEnemy : MonoBehaviour
             direction = transform.TransformDirection(Vector2.left) * 1;
             forceDirection = Vector3.left;
         }
+
+
+        
+
+       
+           
+
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+        PlayerInfo.Instance.DamagePoints++;
+        }
+        if (collision.gameObject.name == "Box")
+        {
+            Destroy(gameObject);
+        }
+
+
     }
 
 
