@@ -21,13 +21,16 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform m_box;
     private bool m_holding;
 
+    // Miscellaneous
     private Animator m_animator;
     private Rigidbody2D m_rb;
 
     void Start()
     {
+        // Getting components
         m_rb = GetComponent<Rigidbody2D>();
         m_animator = GetComponent<Animator>();
+        // Setting the speed changes
         m_halfedSpeed = m_movementSpeed / 1.3f;
         m_startSpeed = m_movementSpeed;
         m_movementDirection.action.performed += StartRunning;
@@ -35,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void StartRunning(InputAction.CallbackContext context)
     {
+        // When holding one of the movement buttons playing the running animation
         m_animator.SetBool("Run", true);
         if (!m_animator.GetBool("Jump") && !m_animator.GetBool("Fall"))
         {
@@ -44,15 +48,16 @@ public class PlayerMovement : MonoBehaviour
 
     private void StopRunning(InputAction.CallbackContext context)
     {
+        // When letting go of the movement buttons stopping the running animation
         m_animator.SetBool("Run", false);
     }
 
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        // When the player collides with an enemy they take damage and play the hit animation
         if (collision.transform.CompareTag("Enemy"))
         {
-            Debug.Log("Hit enemy");
             //PlayerInfo.Instance.damageDealt++;
             m_animator.SetTrigger("Hit");
             m_animator.Play("Hit");
@@ -66,7 +71,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnGrab()
     {
-        Debug.Log("Attempting to grab !");
+        // Attempting to grab the box or letting go of the box when holding it after pressing the grab button
         if (m_box.position.x < m_boxHolder.position.x + 1 && m_box.position.x > m_boxHolder.position.x - 1 && m_box.position.y < m_boxHolder.position.y + 1 && m_box.position.y > m_boxHolder.position.y - 1 && !m_holding)
         {
             m_holding = true;
@@ -81,7 +86,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnJump()
     {
-        // Jumping when you press the jump button
+        // Jumping when you press the jump button and playing the jump animation
         if (m_grounded)
         {
             m_rb.AddForce(Vector2.up * m_jumpForce, ForceMode2D.Impulse);
@@ -101,9 +106,16 @@ public class PlayerMovement : MonoBehaviour
 
     private void SpeedControl()
     {
-        // Limit Velocity when needed
+        // Limit speed when needed
         Vector2 flatVel = new Vector2(m_rb.velocity.x, 0);
 
+        if (flatVel.magnitude > m_movementSpeed)
+        {
+            Vector2 limitedVel = flatVel.normalized * m_movementSpeed;
+            m_rb.velocity = new Vector2(limitedVel.x, m_rb.velocity.y);
+        }
+
+        // When jumping speed gets lowered but when on the ground speed goes back to normal
         if (!m_grounded)
         {
             m_movementSpeed = m_halfedSpeed;
@@ -113,12 +125,7 @@ public class PlayerMovement : MonoBehaviour
             m_movementSpeed = m_startSpeed;
         }
 
-        if (flatVel.magnitude > m_movementSpeed)
-        {
-            Vector2 limitedVel = flatVel.normalized * m_movementSpeed;
-            m_rb.velocity = new Vector2(limitedVel.x, m_rb.velocity.y);
-        }
-
+        // When moving to the other direction the sprite gets flipped
         if (m_rb.velocity.x > 0.1f)
         {
             GetComponent<SpriteRenderer>().flipX = false;
@@ -126,16 +133,6 @@ public class PlayerMovement : MonoBehaviour
         else if (m_rb.velocity.x < 0)
         {
             GetComponent<SpriteRenderer>().flipX = true;
-        }
-
-        if (flatVel.magnitude > 0 && !m_animator.GetBool("Jump") && !m_animator.GetBool("Fall"))
-        {
-            m_animator.SetBool("Run", true);
-            //m_animator.Play("Run");
-        }
-        else if (!m_animator.GetBool("Jump") && !m_animator.GetBool("Fall"))
-        {
-            m_animator.SetBool("Run", false);
         }
     }
 
@@ -151,6 +148,7 @@ public class PlayerMovement : MonoBehaviour
             m_grounded = false;
         }
 
+        // When the player is on the ground the drag goes up and when the player jumps the drag disappears
         if (m_grounded)
         {
             m_rb.drag = m_groundDrag;
@@ -160,6 +158,7 @@ public class PlayerMovement : MonoBehaviour
             m_rb.drag = 0;
         }
 
+        // While the player is holding the box it stays within the outline
         if (m_holding)
         {
             m_box.position = m_boxHolder.position;
@@ -167,6 +166,7 @@ public class PlayerMovement : MonoBehaviour
 
         SpeedControl();
 
+        // When the player jumps but isn't going up anymore the player starts to fall and plays the falling animation
         if (m_animator.GetBool("Jump"))
         {
             if (m_rb.velocity.y < 0)
@@ -175,6 +175,7 @@ public class PlayerMovement : MonoBehaviour
                 m_animator.SetBool("Fall", true);
             }
         }
+        // When the player falls but doesn't go down anymore it stops playing the falling animation
         else if (m_animator.GetBool("Fall"))
         {
             if (m_rb.velocity.y == 0)
