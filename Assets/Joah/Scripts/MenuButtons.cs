@@ -57,7 +57,6 @@ public class MenuButtons : MonoBehaviour
     public void MainMenu()
     {
         SceneManager.LoadScene("Start");
-        PlayerInfo.Instance.isPaused = false;
         Cursor.visible = true;
     }
 
