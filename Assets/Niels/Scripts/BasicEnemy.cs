@@ -37,7 +37,7 @@ public class BasicEnemy : MonoBehaviour
             Pos = new Vector3(transform.position.x + 1.5f, transform.position.y, transform.position.z);
         }
 
-        RaycastHit2D hit = Physics2D.Raycast(Pos, direction, 1);
+        RaycastHit2D hit = Physics2D.Raycast(Pos, direction, .1f);
  
         if (hit && hit.collider.name != "Box")
         {
