@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,17 +7,20 @@ public class Finish : MonoBehaviour
     Animator animator;
     [SerializeField]
     string NextLevelName;
+    int endHP;
+    bool hasFinsihed = false;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         animator = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        if (hasFinsihed)
+        {
+            PlayerInfo.Instance.DamagePoints = endHP;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -26,14 +28,16 @@ public class Finish : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             StartCoroutine(NextLevel());
+            hasFinsihed = true;
+            endHP = PlayerInfo.Instance.DamagePoints;
             animator.SetTrigger("IsPressed");
         }
     }
 
-
     IEnumerator NextLevel()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(2f);
         SceneManager.LoadScene(NextLevelName);
+        PlayerInfo.Instance.isPaused = true;
     }
 }

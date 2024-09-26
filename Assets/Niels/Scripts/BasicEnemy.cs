@@ -39,7 +39,7 @@ public class BasicEnemy : MonoBehaviour
 
         RaycastHit2D hit = Physics2D.Raycast(Pos, direction, .1f);
  
-        if (hit && hit.collider.name != "Box")
+        if (hit && hit.collider.name != "Box" || hit && hit.collider.name != "Player")
         {
             Rotate();
         }
@@ -82,13 +82,6 @@ public class BasicEnemy : MonoBehaviour
             direction = transform.TransformDirection(Vector2.left) * 1;
             forceDirection = Vector3.left;
         }
-
-
-        
-
-       
-           
-
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
