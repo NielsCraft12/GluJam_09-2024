@@ -22,8 +22,8 @@ public class UiManager : MonoBehaviour
 
         if(PlayerInfo.Instance.DamagePoints >= 3)
         {
-            SceneManager.LoadScene("GameOver");
             Cursor.visible = true;
+            SceneManager.LoadScene("GameOver");
         }
 
         if(PlayerInfo.Instance.isPaused)
