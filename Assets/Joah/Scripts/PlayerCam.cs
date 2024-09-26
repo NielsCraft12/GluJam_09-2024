@@ -16,6 +16,11 @@ public class PlayerCam : MonoBehaviour
         {
             yPos = -3.6f;
         }
+
+        if(playerTransform.position.y >= -3.6)
+        {
+            yPos = playerTransform.position.y + 1.5f;
+        }
         
         transform.position = new Vector3(playerTransform.position.x, yPos, playerTransform.position.z - 10);
 
