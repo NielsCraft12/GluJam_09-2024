@@ -39,7 +39,7 @@ public class BasicEnemy : MonoBehaviour
 
         RaycastHit2D hit = Physics2D.Raycast(Pos, direction, .1f);
  
-        if (hit && hit.collider.name != "Box" && hit.collider.name != "Player")
+        if (hit && hit.collider.name != "Box" && hit.collider.name != "Player" && !hit.collider.CompareTag("Enemy"))
         {
             Rotate();
         }

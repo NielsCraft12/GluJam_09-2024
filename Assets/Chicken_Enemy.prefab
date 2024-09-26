@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 7804915500135989243}
   - component: {fileID: 7181262481917462068}
   - component: {fileID: 50798220264241980}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Chicken_Enemy
-  m_TagString: Player
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -182,7 +182,7 @@ Animator:
   m_GameObject: {fileID: 975811130692704975}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: a6f39c92c4b09db4e8d6de418856e19e, type: 2}
+  m_Controller: {fileID: 9100000, guid: 26130d7bb23b3ec4f87f402829df51ed, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
