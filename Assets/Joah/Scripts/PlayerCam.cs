@@ -19,7 +19,7 @@ public class PlayerCam : MonoBehaviour
         
         transform.position = new Vector3(playerTransform.position.x, yPos, playerTransform.position.z - 10);
 
-        if(playerTransform.position.y <= -12)
+        if(playerTransform.position.y <= -8)
         {
             PlayerInfo.Instance.DamagePoints++;
         }
