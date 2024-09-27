@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/Joah/Scenes/Credits.unity
     guid: b516c7db4b2d8ea42aa6c586ff4b41e3
   - enabled: 1
+    path: Assets/Joah/Scenes/Level0.unity
+    guid: 2b4ea61a415a4814a82e25d826b73d53
+  - enabled: 1
     path: Assets/Joah/Scenes/Level1.unity
     guid: 3aace36450eb1494a90e939bc993fb1f
   - enabled: 1

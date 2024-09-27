@@ -36,22 +36,22 @@ public class MenuButtons : MonoBehaviour
     public void Level1()
     {
         PlayerInfo.Instance.isPaused = false;
-        PlayerInfo.Instance.level = 1;
-        SceneManager.LoadScene("Level1");
+        PlayerInfo.Instance.level = 0;
+        SceneManager.LoadScene("Level0");
     }
 
     public void Level2()
     {
         PlayerInfo.Instance.isPaused = false;
-        PlayerInfo.Instance.level = 2;
-        SceneManager.LoadScene("Level2");
+        PlayerInfo.Instance.level = 1;
+        SceneManager.LoadScene("Level1");
     }
 
     public void Level3()
     {
         PlayerInfo.Instance.isPaused = false;
-        PlayerInfo.Instance.level = 3;
-        SceneManager.LoadScene("Level3");
+        PlayerInfo.Instance.level = 2;
+        SceneManager.LoadScene("Level2");
     }
 
     public void MainMenu()
